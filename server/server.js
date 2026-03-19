@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
-
+const ingredientRoutes = require("./routes/ingredientRoutes");
 const app = express();
 
 // Import model
@@ -19,7 +19,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.get("/", (req, res) => {
   res.send("MealMatch API Running");
 });
-
+app.use("/api/ingredients", ingredientRoutes);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
