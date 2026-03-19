@@ -4,7 +4,10 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-//mongodb+srv://saima_k:<db_password>@saima19.okw35gn.mongodb.net/?appName=Saima19
+
+// Import model
+const Ingredient = require("./models/Ingredient");
+
 app.use(cors());
 app.use(express.json());
 
@@ -13,7 +16,6 @@ mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("MongoDB Connected"))
 .catch(err => console.log(err));
 
-// Test route
 app.get("/", (req, res) => {
   res.send("MealMatch API Running");
 });
