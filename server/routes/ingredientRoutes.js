@@ -12,4 +12,41 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+// 🔍 SEARCH INGREDIENTS
+router.get("/search", async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    const ingredients = await Ingredient.find({
+      name: { $regex: q, $options: "i" }
+    }).select("-__v");
+
+    res.json(ingredients);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// 📂 GROUP BY CATEGORY
+router.get("/grouped", async (req, res) => {
+  try {
+    const ingredients = await Ingredient.find();
+
+    const grouped = {};
+
+    ingredients.forEach(item => {
+      if (!grouped[item.category]) {
+        grouped[item.category] = [];
+      }
+      grouped[item.category].push(item);
+    });
+
+    res.json(grouped);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
